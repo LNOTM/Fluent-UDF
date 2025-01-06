@@ -1,0 +1,17 @@
+#include "udf.h"
+DEFINE_PROFILE(flux_profile, t, i)
+{
+    real d[ND_ND];
+    real x;
+    real y;
+    face_t f;
+    real flow_time = RP_Get_Real("flow-time");
+    begin_f_loop(f, t)
+    {
+        F_CENTROID(d, f, t);
+        x = d[0];
+        y = d[1];
+        F_PROFILE(f, t, i) = 4e7 * exp(-3 * (pow((x - 0.05), 2) + pow((y - 0.005 * flow_time), 2)) / 0.005 / 0.005);
+    }
+    end_f_loop(f, t)
+}
